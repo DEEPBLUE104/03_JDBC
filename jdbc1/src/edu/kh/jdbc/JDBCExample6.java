@@ -18,20 +18,25 @@ public class JDBCExample6 {
 		// 성공 시 "수정 성공" 출력
 		// 실패 시 "아이디 또는 비밀번호 불일치" 출력
 
+		// 1) JDBC 객체 참조변수 선언 + 키보드 입력용 객체 sc 선언
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
 		Scanner sc = null;
 
 		try {
-
+			// 2) Connection 객체 생성 (DriverManager를 통해서)
+			// 2-1) OracleDriver 메모리에 로드
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 
+			// 2-2) DB 연결정보 작성
 			String url = "jdbc:oracle:thin:@localhost:1521:XE";
 			String userName = "kh";
 			String password = "kh1234";
 
 			conn = DriverManager.getConnection(url, userName, password);
+			// 2. SQL 작성 + AutoCommit 끄기
+			conn.setAutoCommit(false);
 
 			sc = new Scanner(System.in);
 
@@ -49,15 +54,18 @@ public class JDBCExample6 {
 					WHERE USER_ID = ?
 					AND USER_PW = ?
 					""";
-
+			
+			// 4. PreparedStatement 객체 생성
 			pstmt = conn.prepareStatement(sql);
-
+			
+			// 5. ?에 알맞은 값 세팅
 			pstmt.setString(1, uName);
 			pstmt.setString(2, userId);
 			pstmt.setString(3, userPw);
 
-			conn.setAutoCommit(false);
-
+			// 6. SQL 수행 후 결과값 반환받기
+			// executeQuery() : SELECT 수행 후 ResultSet 반환
+			// executeUpdate() : DML 수행 후 결과 행의 갯수 반환 (int)
 			int result = pstmt.executeUpdate();
 
 			if (result != 0) {
@@ -72,11 +80,9 @@ public class JDBCExample6 {
 			e.printStackTrace();
 
 		} finally {
-
+			// 8. 사용 완료한 JDBC 객체 자원 반환
 			try {
 				if (pstmt != null)
-					pstmt.close();
-				if (conn != null)
 					conn.close();
 
 				if (sc != null)
