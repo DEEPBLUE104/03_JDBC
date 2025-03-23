@@ -18,5 +18,5 @@ public class TODO {
 	private String userId;
 	private String userPw;
 	private String userName;
-	private Date enrollDate;
+	private String enrollDate;
 }

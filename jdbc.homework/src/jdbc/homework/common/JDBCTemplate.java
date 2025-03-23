@@ -55,6 +55,21 @@ public class JDBCTemplate {
 		}
 	}
 
+	
+	public static void rollback(Connection conn) {
+			
+		try {
+			if(conn != null && !conn.isClosed())
+				conn.rollback();
+		}catch(Exception e) {
+			System.out.println("롤백 중 예외발생");
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	
 	public static void close(Connection conn) {
 		
 		try {
