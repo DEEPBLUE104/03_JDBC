@@ -40,8 +40,8 @@ public class TODOView {
 				case 2: selectAll(); break;
 				case 3: selectName(); break;
 				case 4: selectUser(); break;
-		//		case 5: deleteUser(); break;
-		//		case 6: updateName(); break;
+				case 5: deleteUser(); break;
+				case 6: updateName(); break;
 		//		case 7: insertUser2(); break;
 		//		case 8: multiInsertUser(); break;
 
@@ -67,6 +67,10 @@ public class TODOView {
 		}while(input != 0);
 
 	}
+
+
+
+
 
 
 	private void insertUser() throws Exception {
@@ -145,4 +149,54 @@ public class TODOView {
 		}
 		System.out.println(todo);
 	}
+	
+	
+	private void deleteUser() throws Exception {
+		System.out.println("\n==========5. USER_NO을 입력 받아 일치하는 User 삭제=============\n");
+		
+		System.out.println("삭제할 사용자 번호 입력:");
+		int input = sc.nextInt();
+		
+		int result = service.deleteUser(input);
+		
+		if(result > 0) {
+			System.out.println(input + "번을 삭제했습니다.");
+		
+		} else {
+			System.out.println("사용자 번호가 일치하는 User 가 존재하지 않습니다.");
+		}
+		
+	}
+	
+	private void updateName() throws Exception {
+		
+		System.out.println("\n=======ID, PW가 일치하는 회원이 있을 경우 이름 수정========\n");
+		
+		System.out.println("ID :");
+		String userId = sc.next();
+		
+		System.out.println("PW : ");
+		String userPw = sc.next();
+		
+		int memberNo = service.selectmemberNo(userId, userPw);
+		
+		if(memberNo == 0) {
+			System.out.println("아이디, 비밀번호가 일치하는 사람이 없습니다");
+			return;
+		
+		}
+		
+		System.out.println("수정할 이름 입력:");
+		String memberName = sc.next();
+		
+		int result = service.updateName(memberName, memberNo);
+		
+		if(result > 0 ) {
+			System.out.println("수정 완료");
+		} else {
+			System.out.println("수정 실패");
+		}
+		
+	}
+	
 }

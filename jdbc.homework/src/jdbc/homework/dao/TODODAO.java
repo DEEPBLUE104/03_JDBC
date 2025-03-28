@@ -160,4 +160,60 @@ public class TODODAO {
 		return todo;
 	}
 
+	public int deleteUser(Connection conn, int input) throws Exception {
+		
+		int result = 0;
+		
+		try {
+		
+			String sql = """
+					DELETE FROM TB_MEMBER
+					WHERE MEMBER_NO = ?
+					""";
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, input);
+			
+			result = pstmt.executeUpdate();
+			
+		} finally {
+
+			JDBCTemplate.close(pstmt);
+		}
+	
+		return result;
+	}
+
+	public int selectmemberNo(Connection conn, String userId, String userPw) throws Exception {
+
+		int memberNo = 0;
+		
+		try {
+			
+			String sql = """
+					SELECT MEMBER_NO 
+					FROM TB_MEMBER
+					WHERE MEMBER_ID =?
+					AND MEMBER_PW = ?
+					""";
+
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setString(1, userId);
+			pstmt.setString(2, userPw);
+			
+			rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				memberNo = rs.getInt("MEMBER_NO");
+			}
+			
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return memberNo;
+	}
+
 }

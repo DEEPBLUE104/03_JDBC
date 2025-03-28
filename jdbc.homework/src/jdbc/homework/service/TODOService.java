@@ -61,4 +61,39 @@ public class TODOService {
 		return todo;
 	}
 
+	public int deleteUser(int input) throws Exception{
+	
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int result = todoDao.deleteUser(conn, input);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		
+		JDBCTemplate.close(conn);
+		
+		return result;
+	}
+
+	public int selectmemberNo(String userId, String userPw) throws Exception {
+
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int memberNo = todoDao.selectmemberNo(conn, userId, userPw);
+		
+		JDBCTemplate.close(conn);
+		
+		return memberNo;
+		
+
+	}
+
+	public int updateName(String memberName, int memberNo) throws Exception {
+		return 0;
+	}
+
 }
